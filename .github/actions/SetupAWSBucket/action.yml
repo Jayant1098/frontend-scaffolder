@@ -6,6 +6,11 @@ inputs:
     description: 'Name of the bucket must be unqiue.'
     required: true
 
+outputs:
+  s3-bucket-url:
+    description: 'S3 URL for created S3 bucket'
+    value: ${{steps.S3BucketURL.s3-bucket-url}}
+
 runs:
   using: 'composite'
   steps:
@@ -13,18 +18,18 @@ runs:
     #   shell: bash
     #   # TODO: make this action output the file.
 
-    # - uses: sergeysova/gist-read-action@v1
-    #   id: readS3BucketPolicy
-    #   with:
-    #     gist_id: ea838ce0764ab2d9dad25f586e4cf9ad
-    #     file_name: s3BucketPolicy.json
-
-    # - uses: sergeysova/gist-read-action@v1
-    #   id: readWebsiteConfig
-    #   with:
-    #     gist_id: 6b9b562a09db0ac525b03599dcad190c
-    #     file_name: website-configuration.json
-
     - name: Set S3 Bucket Policy
       run: aws s3api put-bucket-policy --bucket ${{inputs.bucket-name}} --policy file://s3BucketPolicy.json
+      shell: bash
+
+    - name: Setup Bucket for Static Site Hosting
+      run: aws s3api put-bucket-website --bucket ${{inputs.bucket-name}} --policy file://website-configuration.json
+      shell: bash
+
+    - name: Get Bucket Website
+      run: aws s3api put-bucket-website --bucket ${{inputs.bucket-name}} --website-configuration file://website-configuration.json
+      shell: bash
+
+    - id: S3BucketURL
+      run: echo "s3-bucket-url=s3://${{inputs.bucket-name}}"
       shell: bash

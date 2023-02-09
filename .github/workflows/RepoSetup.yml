@@ -20,8 +20,8 @@ jobs:
       # Setup R
       - uses: actions/checkout@v3
         name: Checkout Repository
-
-      - uses: ./.github/actions/SetupAWSBucket
+      - id: SetupS3Bucket
+        uses: ./.github/actions/SetupAWSBucket
         with:
           bucket-name: ${{inputs.bucket-name}}
         env:
@@ -29,6 +29,8 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ inputs.aws-secret-access-key }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           AWS_EC2_METADATA_DISABLED: true
+
+      - run: echo ${{steps.SetupS3Bucket.outputs.s3-bucket-url}}
   # Set Secrets
   # Configure S3 variables.
   # Create a S3 bucket and configure permissions.
