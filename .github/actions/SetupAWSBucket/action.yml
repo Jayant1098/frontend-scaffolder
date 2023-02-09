@@ -19,7 +19,7 @@ runs:
     #   # TODO: make this action output the file.
 
     - name: Create Policy from template
-      run: sed "s/{{bucket_name}}/${{inputs.bucket-name}}/" file://s3BucketPolicy.json  > "${{inputs.bucket-name}}-policy.json"
+      run: sed "s/{{bucket_name}}/${{inputs.bucket-name}}/" s3BucketPolicy.json  > "${{inputs.bucket-name}}-policy.json"
       shell: bash
     - name: Log file
       run: cat "${{inputs.bucket-name}}-policy.json"
