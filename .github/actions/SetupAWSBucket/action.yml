@@ -18,12 +18,14 @@ runs:
       with:
         gist_id: ea838ce0764ab2d9dad25f586e4cf9ad
         file_name: s3BucketPolicy.json
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - uses: sergeysova/gist-read-action@v1
       id: readWebsiteConfig
       with:
         gist_id: 6b9b562a09db0ac525b03599dcad190c
         file_name: website-configuration.json
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Set S3 Bucket Policy
       run: aws s3api put-bucket-policy --bucket ${{inputs.bucket-name}} --policy ${{steps.readWebsiteConfig.outputs.content}}
