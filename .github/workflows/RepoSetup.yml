@@ -43,8 +43,8 @@ jobs:
         name: Checkout Repository
 
       - run: |
-          echo ${{needs.setup-s3-bucket.outputs.s3-bucket-url}
-          echo ${{needs.setup-s3-bucket.outputs.bucket-policy}
+          echo ${{needs.setup-s3-bucket.outputs.s3-bucket-url}}
+          echo ${{needs.setup-s3-bucket.outputs.bucket-policy}}
   # Set Secrets
   # Configure S3 variables.
   # Create a S3 bucket and configure permissions.
