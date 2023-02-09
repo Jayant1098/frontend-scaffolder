@@ -14,8 +14,8 @@ outputs:
 runs:
   using: 'composite'
   steps:
-    # - run: aws s3api create-bucket --bucket ${{inputs.bucket-name}}
-    #   shell: bash
+    - run: aws s3api create-bucket --bucket ${{inputs.bucket-name}}
+      shell: bash
     #   # TODO: make this action output the file.
 
     - name: Create Policy from template
