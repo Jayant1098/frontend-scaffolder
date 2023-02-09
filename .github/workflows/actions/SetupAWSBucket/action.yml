@@ -1,0 +1,30 @@
+name: Setup S3 Bucket Policy
+description: This creates a S3 Bucket and configures it for static site hosting
+
+inputs:
+  bucket-name:
+    description: 'Name of the bucket must be unqiue.'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    # - run: aws s3api create-bucket --bucket ${{inputs.bucket-name}}
+    #   shell: bash
+    #   # TODO: make this action output the file.
+
+    - uses: sergeysova/gist-read-action@v1
+      id: readS3BucketPolicy
+      with:
+        gist_id: ea838ce0764ab2d9dad25f586e4cf9ad
+        file_name: s3BucketPolicy.json
+
+    - uses: sergeysova/gist-read-action@v1
+      id: readWebsiteConfig
+      with:
+        gist_id: 6b9b562a09db0ac525b03599dcad190c
+        file_name: website-configuration.json
+
+    - name: Set S3 Bucket Policy
+      run: aws s3api put-bucket-policy --bucket ${{inputs.bucket-name}} --policy ${{steps.readWebsiteConfig.outputs.content}}
+      shell: bash

@@ -1,0 +1,32 @@
+name: Repo Setup
+on:
+  workflow_dispatch:
+    inputs:
+      repo-name:
+        required: true
+        description: Name of the Repo To Setup
+      bucket-name:
+        required: true
+        description: S3 Bucket Name to Use
+      aws-access-id:
+        description: Access ID for AWS account
+      aws-secret-access-key:
+        description: Access Key for AWS account
+jobs:
+  setup-s3-bucket:
+    # af
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/actions/SetupAWSBucket
+        with:
+          bucket-name: ${{inputs.bucket-name}}
+        env:
+          AWS_ACCESS_KEY_ID: ${{ inputs.aws-access-id }}
+          AWS_SECRET_ACCESS_KEY: ${{ inputs.aws-secret-access-key }}
+          AWS_EC2_METADATA_DISABLED: true
+
+  # Set Secrets
+  # Configure S3 variables.
+  # Create a S3 bucket and configure permissions.
+# aws s3api  --profile jayant-hcode get-bucket-website --bucket devop-test-bucket1
+# aws s3api  --profile jayant-hcode get-bucket-website --bucket devop-test-bucket1
