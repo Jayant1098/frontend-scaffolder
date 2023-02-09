@@ -17,6 +17,10 @@ jobs:
     # af
     runs-on: ubuntu-latest
     steps:
+      # Setup Repo
+      - uses: actions/checkout@v3
+        name: Checkout Repository
+
       - uses: ./.github/actions/SetupAWSBucket
         with:
           bucket-name: ${{inputs.bucket-name}}
