@@ -42,18 +42,15 @@ jobs:
       - uses: actions/checkout@v3
         name: Checkout Repository
 
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: ${{inputs.bucket-name}}-policy.json
       - run: echo ${{inputs.bucket-name}}-policy.json
       - run: ls
 
-      - run: |
-          echo ${{needs.setup-s3-bucket.outputs.s3-bucket-url}}
-          echo ${{needs.setup-s3-bucket.outputs.bucket-policy}}
+      - run: echo ${{needs.setup-s3-bucket.outputs.s3-bucket-url}}
   # Set Secrets
   # Configure S3 variables.
   # Create a S3 bucket and configure permissions.
-
 # aws s3api  --profile jayant-hcode get-bucket-website --bucket devop-test-bucket1
 # aws s3api  --profile jayant-hcode get-bucket-website --bucket devop-test-bucket1

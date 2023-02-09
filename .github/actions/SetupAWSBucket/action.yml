@@ -46,10 +46,10 @@ runs:
     #   shell: bash
 
     - id: S3BucketURL
-      run: echo "s3-bucket-url=s3://{{inputs.bucket-name}}" >> $GITHUB_OUTPUT
+      run: echo "s3-bucket-url=s3://${{inputs.bucket-name}}" >> $GITHUB_OUTPUT
       shell: bash
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       with:
         name: ${{inputs.bucket-name}}-policy.json
         path: ./${{inputs.bucket-name}}-policy.json
