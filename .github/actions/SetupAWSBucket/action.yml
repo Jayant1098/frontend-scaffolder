@@ -18,8 +18,15 @@ runs:
     #   shell: bash
     #   # TODO: make this action output the file.
 
+    - name: Create Policy from template
+      run: sed "s/{{bucket_name}}/${{inputs.bucket-name}}/" file://s3BucketPolicy.json  > "${{input.bucket-name}}-policy.json"
+      shell: bash
+    - name: Log file
+      run: cat "${{input.bucket-name}}-policy.json"
+      shell: bash
+
     - name: Set S3 Bucket Policy
-      run: aws s3api put-bucket-policy --bucket ${{inputs.bucket-name}} --policy file://s3BucketPolicy.json
+      run: aws s3api put-bucket-policy --bucket ${{inputs.bucket-name}} --policy file://${{inputs.bucket-name}}-policy.json
       shell: bash
 
     - name: Setup Bucket for Static Site Hosting
@@ -31,5 +38,5 @@ runs:
       shell: bash
 
     - id: S3BucketURL
-      run: echo "s3-bucket-url=s3://${{inputs.bucket-name}}"
+      run: echo "s3-bucket-url=s3://{{inputs.bucket-name}}"
       shell: bash

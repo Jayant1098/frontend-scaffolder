@@ -20,6 +20,8 @@ jobs:
       # Setup R
       - uses: actions/checkout@v3
         name: Checkout Repository
+
+      # Setup S3 bucket
       - id: SetupS3Bucket
         uses: ./.github/actions/SetupAWSBucket
         with:
