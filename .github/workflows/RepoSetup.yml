@@ -17,7 +17,7 @@ jobs:
     # af
     runs-on: ubuntu-latest
     steps:
-      # Setup Repo
+      # Setup R
       - uses: actions/checkout@v3
         name: Checkout Repository
 
@@ -27,8 +27,8 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ inputs.aws-access-id }}
           AWS_SECRET_ACCESS_KEY: ${{ inputs.aws-secret-access-key }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           AWS_EC2_METADATA_DISABLED: true
-
   # Set Secrets
   # Configure S3 variables.
   # Create a S3 bucket and configure permissions.
