@@ -30,11 +30,11 @@ runs:
       shell: bash
 
     - name: Setup Bucket for Static Site Hosting
-      run: aws s3api put-bucket-website --bucket ${{inputs.bucket-name}} --policy file://website-configuration.json
+      run: aws s3api put-bucket-website --bucket ${{inputs.bucket-name}} --website-configuration file://website-configuration.json
       shell: bash
 
     - name: Get Bucket Website
-      run: aws s3api put-bucket-website --bucket ${{inputs.bucket-name}} --website-configuration file://website-configuration.json
+      run: aws s3api get-bucket-website --bucket ${{inputs.bucket-name}} --website-configuration file://website-configuration.json
       shell: bash
 
     - id: S3BucketURL
