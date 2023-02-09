@@ -26,5 +26,5 @@ runs:
     #     file_name: website-configuration.json
 
     - name: Set S3 Bucket Policy
-      run: aws s3api put-bucket-policy --bucket ${{inputs.bucket-name}} --policy ./s3BucketPolicy.json
+      run: aws s3api put-bucket-policy --bucket ${{inputs.bucket-name}} --policy file://../s3BucketPolicy.json
       shell: bash
