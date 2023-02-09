@@ -54,6 +54,11 @@ runs:
         name: ${{inputs.bucket-name}}-policy.json
         path: ./${{inputs.bucket-name}}-policy.json
 
+    - uses: actions/upload-artifact@v3
+      with:
+        name: ${{inputs.bucket-name}}-website-configuration.json
+        path: ./${{inputs.bucket-name}}-website-configuration.json
+
     # - id: OutputPolicy
     #   run: |
     #     echo 'bucket-policy=`cat ${{inputs.bucket-name}}-website-configuration.json`' >> $GITHUB_OUTPUT

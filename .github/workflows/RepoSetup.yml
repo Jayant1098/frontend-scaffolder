@@ -42,13 +42,25 @@ jobs:
       - uses: actions/checkout@v3
         name: Checkout Repository
 
+      # Download Bucket Policy
       - uses: actions/download-artifact@v3
         with:
           name: ${{inputs.bucket-name}}-policy.json
-      - run: echo ${{inputs.bucket-name}}-policy.json
-      - run: ls
 
-      - run: echo ${{needs.setup-s3-bucket.outputs.s3-bucket-url}}
+      # Download Website Configuration
+      - uses: actions/download-artifact@v3
+        with:
+          name: ${{inputs.bucket-name}}-website-configuration.json
+
+      # Create Github repo
+      - name: Create Repo ${{input.repo-name}}
+        run: gh repo create ${{inputs.repo-name}} --private --source=. --push
+
+      # Set Secrets
+      - run: gh secret set AWS_ACCESS_ID --body ${{ inputs.aws-access-id }} --app actions --repos jayant3110/${{inputs.repo-name}}
+      - run: gh secret set AWS_ACCESS_SECRET_KEY --body ${{ inputs.aws-secret-access-key }} --app actions --repos jayant3110/${{inputs.repo-name}}
+
+      # - run: echo ${{needs.setup-s3-bucket.outputs.s3-bucket-url}}
   # Set Secrets
   # Configure S3 variables.
   # Create a S3 bucket and configure permissions.
