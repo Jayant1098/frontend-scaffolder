@@ -65,6 +65,10 @@ jobs:
       - name: Remove Git Folder
         run: git commit -m 'First Commit From Workflow'
 
+      - name: Configure Git
+        run: git config --global user.email "tester@hcode.tech"
+      - run: git config --global user.name "Workflow User"
+
       # Create Github repo
       - name: Create Repo ${{inputs.repo-name}}
         env:
