@@ -33,8 +33,21 @@ jobs:
           AWS_EC2_METADATA_DISABLED: true
 
       - run: echo ${{steps.SetupS3Bucket.outputs.s3-bucket-url}}
+
+  setup-github-repo:
+    runs-on: ubuntu-latest
+    needs: setup-s3-bucket
+    steps:
+      # Setup
+      - uses: actions/checkout@v3
+        name: Checkout Repository
+
+      - run: |
+          echo ${{needs.setup-s3-bucket.outputs.s3-bucket-url}
+          echo ${{needs.setup-s3-bucket.outputs.bucket-policy}
   # Set Secrets
   # Configure S3 variables.
   # Create a S3 bucket and configure permissions.
+
 # aws s3api  --profile jayant-hcode get-bucket-website --bucket devop-test-bucket1
 # aws s3api  --profile jayant-hcode get-bucket-website --bucket devop-test-bucket1
