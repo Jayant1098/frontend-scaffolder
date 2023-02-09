@@ -53,6 +53,18 @@ jobs:
         with:
           name: ${{inputs.bucket-name}}-website-configuration.json
 
+      - name: Remove Git Folder
+        run: rm -rf .git
+
+      - name: Init git
+        run: git init
+
+      - name: Add All
+        run: git add .
+
+      - name: Remove Git Folder
+        run: git commit -m 'First Commit From Workflow'
+
       # Create Github repo
       - name: Create Repo ${{inputs.repo-name}}
         env:
