@@ -62,12 +62,12 @@ jobs:
       - name: Add All
         run: git add .
 
-      - name: Remove Git Folder
-        run: git commit -m 'First Commit From Workflow'
-
       - name: Configure Git
         run: git config --global user.email "tester@hcode.tech"
       - run: git config --global user.name "Workflow User"
+
+      - name: Add Commit
+        run: git commit -m 'First Commit From Workflow'
 
       # Create Github repo
       - name: Create Repo ${{inputs.repo-name}}
