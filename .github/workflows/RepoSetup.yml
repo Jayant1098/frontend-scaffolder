@@ -35,6 +35,7 @@ jobs:
       - run: echo ${{steps.SetupS3Bucket.outputs.s3-bucket-url}}
 
   setup-github-repo:
+    permissions: write-all
     runs-on: ubuntu-latest
     needs: setup-s3-bucket
     steps:
