@@ -88,3 +88,6 @@ jobs:
             /repos/jayant3110/${{inputs.repo-name}}/actions/variables \
             -f name='DEV_S3_URL' \
             -f value=s3://${{inputs.bucket-name}}
+
+      - name: Trigger Deploy on Dev Workflow
+        run: gh workflow run Deploy.yml -R jayant3110/${{inputs.repo-name}}
