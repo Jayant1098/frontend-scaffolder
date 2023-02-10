@@ -40,54 +40,56 @@ jobs:
     needs: setup-s3-bucket
     steps:
       # Setup
-      - uses: actions/checkout@v3
-        name: Checkout Repository
-        with:
-          token: ${{ secrets.JP_PERSONAL_ACCESS_TOKEN }}
-          repository: jayant3110/template-vite-repo
-          branch: main
+      # - uses: actions/checkout@v3
+      #   name: Checkout Repository
+      #   with:
+      #     token: ${{ secrets.JP_PERSONAL_ACCESS_TOKEN }}
+      #     repository: jayant3110/template-vite-repo
+      #     branch: main
 
-      # Download Bucket Policy
-      - uses: actions/download-artifact@v3
-        with:
-          name: ${{inputs.bucket-name}}-policy.json
+      # # Download Bucket Policy
+      # - uses: actions/download-artifact@v3
+      #   with:
+      #     name: ${{inputs.bucket-name}}-policy.json
 
-      # Download Website Configuration
-      - uses: actions/download-artifact@v3
-        with:
-          name: ${{inputs.bucket-name}}-website-configuration.json
+      # # Download Website Configuration
+      # - uses: actions/download-artifact@v3
+      #   with:
+      #     name: ${{inputs.bucket-name}}-website-configuration.json
 
-      - name: Remove Git Folder
-        run: rm -rf .git
+      # - name: Remove Git Folder
+      #   run: rm -rf .git
 
-      - name: Configure Git
-        run: |
-          git config --global user.email "github-actions"
-          git config --global user.name "github-actions@github.com"
+      # - name: Configure Git
+      #   run: |
+      #     git config --global user.email "github-actions"
+      #     git config --global user.name "github-actions@github.com"
 
-      - name: Init Git Repo, Add First Commit
-        run: |
-          git init
-          git add .
-          git commit -m 'First Commit From Workflow'
+      # - name: Init Git Repo, Add First Commit
+      #   run: |
+      #     git init
+      #     git add .
+      #     git commit -m 'First Commit From Workflow'
 
-      - run: echo ${{github.repository_owner}}
+      # - run: echo ${{github.repository_owner}}
 
-      # Create Github repo and set secrets.
-      - name: Create Repo ${{inputs.repo-name}}
-        env:
-          GH_TOKEN: ${{ secrets.JP_PERSONAL_ACCESS_TOKEN }}
-        run: |
-          gh repo create ${{inputs.repo-name}} --private --source=. --push
-          gh secret set AWS_ACCESS_ID --body ${{ inputs.aws-access-id }} --app actions --repos jayant3110/${{inputs.repo-name}}
-          gh secret set AWS_ACCESS_SECRET_KEY --body ${{ inputs.aws-secret-access-key }} --app actions --repos jayant3110/${{inputs.repo-name}}
-          gh secret set DEV_S3_URL --body s3://${{ inputs.repo-name }} --app actions --repos jayant3110/${{inputs.repo-name}}
-          gh api \
-            --method POST \
-            -H "Accept: application/vnd.github+json" \
-            /repos/jayant3110/${{inputs.repo-name}}/actions/variables \
-            -f name='DEV_S3_URL' \
-            -f value=s3://${{inputs.bucket-name}}
+      # # Create Github repo and set secrets.
+      # - name: Create Repo ${{inputs.repo-name}}
+      #   env:
+      #     GH_TOKEN: ${{ secrets.JP_PERSONAL_ACCESS_TOKEN }}
+      #   run: |
+      #     gh repo create ${{inputs.repo-name}} --private --source=. --push
+      #     gh secret set AWS_ACCESS_ID --body ${{ inputs.aws-access-id }} --app actions --repos jayant3110/${{inputs.repo-name}}
+      #     gh secret set AWS_ACCESS_SECRET_KEY --body ${{ inputs.aws-secret-access-key }} --app actions --repos jayant3110/${{inputs.repo-name}}
+      #     gh secret set DEV_S3_URL --body s3://${{ inputs.repo-name }} --app actions --repos jayant3110/${{inputs.repo-name}}
+      #     gh api \
+      #       --method POST \
+      #       -H "Accept: application/vnd.github+json" \
+      #       /repos/jayant3110/${{inputs.repo-name}}/actions/variables \
+      #       -f name='DEV_S3_URL' \
+      #       -f value=s3://${{inputs.bucket-name}}
 
       - name: Trigger Deploy on Dev Workflow
         run: gh workflow run Deploy.yml -R jayant3110/${{inputs.repo-name}}
+        env:
+          GH_TOKEN: ${{ secrets.JP_PERSONAL_ACCESS_TOKEN }}
