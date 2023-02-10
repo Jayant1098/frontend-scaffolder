@@ -43,9 +43,9 @@ jobs:
       - uses: actions/checkout@v3
         name: Checkout Repository
         with:
+          token: ${{ secrets.JP_PERSONAL_ACCESS_TOKEN }}
           repository: jayant3110/template-vite-repo
-        env:
-          GH_TOKEN: ${{ secrets.JP_PERSONAL_ACCESS_TOKEN }}
+          branch: main
 
       # Download Bucket Policy
       - uses: actions/download-artifact@v3
@@ -62,8 +62,8 @@ jobs:
 
       - name: Configure Git
         run: |
-          git config --global user.email "tester@hcode.tech"
-          git config --global user.name "Workflow User"
+          git config --global user.email "github-actions"
+          git config --global user.name "github-actions@github.com"
 
       - name: Init Git Repo, Add First Commit
         run: |
