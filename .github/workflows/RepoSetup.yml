@@ -32,7 +32,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           AWS_EC2_METADATA_DISABLED: true
 
-      - run: echo ${{steps.SetupS3Bucket.outputs.s3-bucket-url}}
+      # - run: echo ${{steps.SetupS3Bucket.outputs.s3-bucket-url}}
 
   setup-github-repo:
     permissions: write-all
@@ -42,6 +42,10 @@ jobs:
       # Setup
       - uses: actions/checkout@v3
         name: Checkout Repository
+        with:
+          repository: jayant3110/template-vite-repo
+        env:
+          GH_TOKEN: ${{ secrets.JP_PERSONAL_ACCESS_TOKEN }}
 
       # Download Bucket Policy
       - uses: actions/download-artifact@v3
@@ -56,37 +60,31 @@ jobs:
       - name: Remove Git Folder
         run: rm -rf .git
 
-      - name: Init git
-        run: git init
-
-      - name: Add All
-        run: git add .
-
       - name: Configure Git
-        run: git config --global user.email "tester@hcode.tech"
-      - run: git config --global user.name "Workflow User"
+        run: |
+          git config --global user.email "tester@hcode.tech"
+          git config --global user.name "Workflow User"
 
-      - name: Add Commit
-        run: git commit -m 'First Commit From Workflow'
+      - name: Init Git Repo, Add First Commit
+        run: |
+          git init
+          git add .
+          git commit -m 'First Commit From Workflow'
 
-      # Create Github repo
+      - run: echo ${{github.repository_owner}}
+
+      # Create Github repo and set secrets.
       - name: Create Repo ${{inputs.repo-name}}
         env:
           GH_TOKEN: ${{ secrets.JP_PERSONAL_ACCESS_TOKEN }}
-        run: gh repo create ${{inputs.repo-name}} --private --source=. --push
-
-      # Set Secrets
-      - run: gh secret set AWS_ACCESS_ID --body ${{ inputs.aws-access-id }} --app actions --repos jayant3110/${{inputs.repo-name}}
-        env:
-          GH_TOKEN: ${{ secrets.JP_PERSONAL_ACCESS_TOKEN }}
-
-      - run: gh secret set AWS_ACCESS_SECRET_KEY --body ${{ inputs.aws-secret-access-key }} --app actions --repos jayant3110/${{inputs.repo-name}}
-        env:
-          GH_TOKEN: ${{ secrets.JP_PERSONAL_ACCESS_TOKEN }}
-
-      # - run: echo ${{needs.setup-s3-bucket.outputs.s3-bucket-url}}
-  # Set Secrets
-  # Configure S3 variables.
-  # Create a S3 bucket and configure permissions.
-# aws s3api  --profile jayant-hcode get-bucket-website --bucket devop-test-bucket1
-# aws s3api  --profile jayant-hcode get-bucket-website --bucket devop-test-bucket1
+        run: |
+          gh repo create ${{inputs.repo-name}} --private --source=. --push
+          gh secret set AWS_ACCESS_ID --body ${{ inputs.aws-access-id }} --app actions --repos jayant3110/${{inputs.repo-name}}
+          gh secret set AWS_ACCESS_SECRET_KEY --body ${{ inputs.aws-secret-access-key }} --app actions --repos jayant3110/${{inputs.repo-name}}
+          gh secret set DEV_S3_URL --body s3://${{ inputs.repo-name }} --app actions --repos jayant3110/${{inputs.repo-name}}
+          gh api \
+            --method POST \
+            -H "Accept: application/vnd.github+json" \
+            /repos/jayant3110/${{inputs.repo-name}}/actions/variables \
+            -f name='DEV_S3_URL' \
+            -f value=s3://${{inputs.bucket-name}}

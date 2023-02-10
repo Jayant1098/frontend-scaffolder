@@ -35,3 +35,10 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+
+# Create new repo on github 
+# gh repo create react-with-vite-boilerplate --private --source=. --push
+# gh secret set AWS_ACCESS_ID --body 2 --app actions --repos jayant3110/react-with-vite-boilerplate
+# Prompt the user to check if the bucket name exists
+# aws s3api --profile jayant-hcode put-bucket-policy --bucket devop-test-bucket1  --policy ./s3BucketPolicy.json
