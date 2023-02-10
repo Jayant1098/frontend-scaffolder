@@ -90,6 +90,6 @@ jobs:
             -f value=s3://${{inputs.bucket-name}}
 
       - name: Trigger Deploy on Dev Workflow
-        run: gh workflow run Deploy.yml -R jayant3110/${{inputs.repo-name}}
+        run: gh workflow run Deploy.yml -R jayant3110/${{inputs.repo-name}} -F environment:Dev
         env:
           GH_TOKEN: ${{ secrets.JP_PERSONAL_ACCESS_TOKEN }}
