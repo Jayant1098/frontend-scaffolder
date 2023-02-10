@@ -17,8 +17,8 @@ outputs:
 runs:
   using: 'composite'
   steps:
-    # - run: aws s3api create-bucket --bucket ${{inputs.bucket-name}}
-    #   shell: bash
+    - run: aws s3api create-bucket --bucket ${{inputs.bucket-name}}
+      shell: bash
     #   # TODO: make this action output the file.
 
     - name: Create Policy from template
@@ -29,21 +29,21 @@ runs:
       run: sed "s/{{bucket_name}}/${{inputs.bucket-name}}/" website-configuration.json  > "${{inputs.bucket-name}}-website-configuration.json"
       shell: bash
 
-    # - name: Log file
-    #   run: cat "${{inputs.bucket-name}}-policy.json"
-    #   shell: bash
+    - name: Log file
+      run: cat "${{inputs.bucket-name}}-policy.json"
+      shell: bash
 
-    # - name: Set S3 Bucket Policy
-    #   run: aws s3api put-bucket-policy --bucket ${{inputs.bucket-name}} --policy file://${{inputs.bucket-name}}-policy.json
-    #   shell: bash
+    - name: Set S3 Bucket Policy
+      run: aws s3api put-bucket-policy --bucket ${{inputs.bucket-name}} --policy file://${{inputs.bucket-name}}-policy.json
+      shell: bash
 
-    # - name: Setup Bucket for Static Site Hosting
-    #   run: aws s3api put-bucket-website --bucket ${{inputs.bucket-name}} --website-configuration file://${{inputs.bucket-name}}-website-configuration.json
-    #   shell: bash
+    - name: Setup Bucket for Static Site Hosting
+      run: aws s3api put-bucket-website --bucket ${{inputs.bucket-name}} --website-configuration file://${{inputs.bucket-name}}-website-configuration.json
+      shell: bash
 
-    # - name: Get Bucket Website
-    #   run: aws s3api get-bucket-website --bucket ${{inputs.bucket-name}}
-    #   shell: bash
+    - name: Get Bucket Website
+      run: aws s3api get-bucket-website --bucket ${{inputs.bucket-name}}
+      shell: bash
 
     - id: S3BucketURL
       run: echo "s3-bucket-url=s3://${{inputs.bucket-name}}" >> $GITHUB_OUTPUT
