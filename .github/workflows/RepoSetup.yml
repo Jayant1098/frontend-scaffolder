@@ -79,8 +79,8 @@ jobs:
           GH_TOKEN: ${{ secrets.JP_PERSONAL_ACCESS_TOKEN }}
         run: |
           gh repo create ${{inputs.repo-name}} --private --source=. --push
-          gh secret set AWS_ACCESS_ID --body ${{ inputs.aws-access-id }} --app actions --repos jayant3110/${{inputs.repo-name}}
-          gh secret set AWS_ACCESS_SECRET_KEY --body ${{ inputs.aws-secret-access-key }} --app actions --repos jayant3110/${{inputs.repo-name}}
+          gh secret set AWS_ACCESS_KEY_ID --body ${{ inputs.aws-access-id }} --app actions --repos jayant3110/${{inputs.repo-name}}
+          gh secret set AWS_SECRET_ACCESS_KEY --body ${{ inputs.aws-secret-access-key }} --app actions --repos jayant3110/${{inputs.repo-name}}
           gh secret set DEV_S3_URL --body s3://${{ inputs.repo-name }} --app actions --repos jayant3110/${{inputs.repo-name}}
           gh api \
             --method POST \
